@@ -21,4 +21,12 @@ class Usuario extends Sequelize.Model {
   }
 }
 
+Usuario.associate = (models) => {
+  Usuario.belongsTo(models.Endereco, {
+    foreignKey: "endereco_id",
+    as: "endereco",
+    targetKey: "id",
+  });
+}
+
 module.exports = Usuario;

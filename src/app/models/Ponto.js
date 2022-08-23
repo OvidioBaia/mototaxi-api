@@ -18,4 +18,13 @@ class Ponto extends Sequelize.Model {
   }
 }
 
+Ponto.associate = (models) => {
+  Ponto.belongsTo(models.Endereco, {
+    foreignKey: "endereco_id",
+    as: "endereco",
+    targetKey: "id",
+  });
+}
+
+
 module.exports = Ponto;

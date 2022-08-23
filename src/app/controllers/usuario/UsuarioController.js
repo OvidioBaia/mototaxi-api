@@ -1,4 +1,5 @@
 const services = require("../../services/usuario");
+const servicesEndereco = require("../../services/endereco");
 const responseErrorMessage = require("../../utils/responseErrorMessage");
 const errorMessage = require("../../utils/responseErrorMessage");
 
@@ -9,7 +10,9 @@ function responseError(res) {
 class UsuarioController {
   async store(req, res, next) {
     try {
-      const response = await services.create(req.body);
+
+      const responseAdress = await servicesEndereco.create({rua: req.body.rua, bairro: req.body.bairro, numero: req.body.numero, cidade: req.body.cidade, referencia: req.body.referencia})
+      const response = await services.create({...req.body, endereco_id: responseAdress.id});
 
       return res.status(201).json({ res: "Usuario criado com sucesso" });
     } catch (error) {

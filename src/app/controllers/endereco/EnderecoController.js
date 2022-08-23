@@ -1,5 +1,4 @@
-const services = require("../../services/ponto");
-const servicesEndereco = require("../../services/endereco");
+const services = require("../../services/endereco");
 const responseErrorMessage = require("../../utils/responseErrorMessage");
 const errorMessage = require("../../utils/responseErrorMessage");
 
@@ -7,12 +6,11 @@ function responseError(res) {
   return res.status(500).json({ res: errorMessage.res });
 }
 
-class PontoController {
+class EnderecoController {
   async store(req, res, next) {
     try {
-      const responseAdress = await servicesEndereco.create({rua: req.body.rua, bairro: req.body.bairro, numero: req.body.numero, cidade: req.body.cidade, referencia: req.body.referencia})
-      const response = await services.create({...req.body, endereco_id: responseAdress.id});
-      return res.status(201).json({ res: "Ponto criado com sucesso" });
+      await services.create(req.body);
+      return res.status(201).json({ res: "Endereco criado com sucesso" });
     } catch (error) {
       responseError(res);
     }
@@ -29,11 +27,11 @@ class PontoController {
 
   async delete(req, res, next) {
     try {
-      const idPonto = req.params.id;
+      const idEndereco = req.params.id;
 
-      const deleted = await services.delete(idPonto);
+      const deleted = await services.delete(idEndereco);
       if (deleted) {
-        return res.status(200).json({ res: "Ponto excluido com sucesso" });
+        return res.status(200).json({ res: "Endereco excluido com sucesso" });
       }
     } catch (error) {
       responseError(res);
@@ -42,12 +40,12 @@ class PontoController {
 
   async update(req, res, next) {
     try {
-      const idPonto = req.params.id;
+      const idEndereco = req.params.id;
 
-      const isUpdate = await services.update(idPonto, req.body);
+      const isUpdate = await services.update(idEndereco, req.body);
 
       if (isUpdate[0] === 1) {
-        return res.status(200).json({ res: "Ponto atualizado com sucesso" });
+        return res.status(200).json({ res: "Endereco atualizado com sucesso" });
       }
     } catch (error) {
       console.log(error);
@@ -57,8 +55,8 @@ class PontoController {
 
   async findOne(req, res, next) {
     try {
-      const idPonto = req.params.id;
-      const user = await services.findOne(idPonto);
+      const idEndereco = req.params.id;
+      const user = await services.findOne(idEndereco);
       res.status(200).json({ res: user });
     } catch (error) {
       responseError(res);
@@ -66,4 +64,4 @@ class PontoController {
   }
 }
 
-module.exports = new PontoController();
+module.exports = new EnderecoController();
