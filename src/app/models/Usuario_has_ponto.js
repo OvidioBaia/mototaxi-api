@@ -1,6 +1,7 @@
-const Sequelize = require("sequelize");
+const Sequelize = require('sequelize')
+const Ponto = require('./Ponto')
 
-class Usuario_has_ponto extends Sequelize.Model {
+class Usuarios_ponto extends Sequelize.Model {
   static init(sequelize) {
     super.init(
       { 
@@ -14,20 +15,22 @@ class Usuario_has_ponto extends Sequelize.Model {
 
     return this;
   }
+  
 }
 
-Usuario_has_ponto.associate = (models) => {
-  Usuario_has_ponto.belongsTo(models.Usuario, {
+Usuarios_ponto.associate = (models) => {
+  Usuarios_ponto.belongsTo(models.Usuario, {
     foreignKey: "usuario_id",
     as: "usuario",
     targetKey: "id",
   });
-  Usuario_has_ponto.belongsTo(models.Ponto, {
+  Usuarios_ponto.belongsTo(Ponto, {
     foreignKey: "ponto_id",
     as: "ponto",
     targetKey: "id",
   });
 }
+  
 
 
-module.exports = Usuario_has_ponto;
+module.exports = Usuarios_ponto;

@@ -1,8 +1,9 @@
 const User = require("../models/Usuario");
-
+const Endereco = require("../models/Endereco");
+const { associate } = require("../models/Usuario");
 module.exports = {
   async create(data) {
-    User.create(data);
+   return User.create(data);
   },
 
   async delete(id) {
@@ -30,16 +31,26 @@ module.exports = {
   },
 
   async update(id, data) {
+    console.log('id', id);
+    console.log('data', data);
     const [updated] = await User.update(data, {
       where: { id: id },
     });
-
+    console.log('vbbb', updated);
     return updated;
   },
 
   async list() {
-    const users = await User.findAll();
-
+  
+   const users = await User.findAll();
     return users;
+  },
+
+  async findById(id) {
+    const user = await User.findAll({
+      where: { id: id },
+    });
+
+    return user;
   },
 };

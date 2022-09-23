@@ -4,9 +4,11 @@ const pontoController = require("./app/controllers/ponto/PontoController")
 const usuarioController =  require("./app/controllers/usuario/UsuarioController")
 const enderecoController =  require("./app/controllers/endereco/EnderecoController")
 const usuario_has_pontoController =  require("./app/controllers/usuario_has_ponto/Usuario_has_pontoController")
+const LoginController = require("./app/controllers/login/LoginController")
 
 const routes = new Router();
 
+routes.post("/login", asyncHandler(LoginController.Login));
 // ponto End-points
 routes.post("/ponto", asyncHandler(pontoController.store));
 
@@ -42,9 +44,11 @@ routes.get("/endereco/:id", asyncHandler(enderecoController.findOne));
 routes.delete("/endereco/:id", asyncHandler(enderecoController.delete));
 
 // usuario_has_ponto End-points
-routes.post("/usuario_has_ponto", asyncHandler(usuario_has_pontoController.store));
+routes.post("/usuario/ponto", asyncHandler(usuario_has_pontoController.store));
 
-routes.get("/usuario_has_ponto", asyncHandler(usuario_has_pontoController.index));
+routes.get("/taxi/ponto/:id", asyncHandler(usuario_has_pontoController.taxiForPoint))
+
+routes.get("/taxi", asyncHandler(usuario_has_pontoController.index));
 
 routes.put("/usuario_has_ponto/:id", asyncHandler(usuario_has_pontoController.update));
 

@@ -55,9 +55,10 @@ class EnderecoController {
 
   async findOne(req, res, next) {
     try {
-      const idEndereco = req.params.id;
-      const user = await services.findOne(idEndereco);
-      res.status(200).json({ res: user });
+      const id = req.params.id;
+      console.log(id)
+      const endereco = await services.findOne(id);
+      res.status(200).json(endereco);
     } catch (error) {
       responseError(res);
     }

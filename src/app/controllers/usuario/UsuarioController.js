@@ -9,10 +9,30 @@ function responseError(res) {
 
 class UsuarioController {
   async store(req, res, next) {
-    try {
-
-      const responseAdress = await servicesEndereco.create({rua: req.body.rua, bairro: req.body.bairro, numero: req.body.numero, cidade: req.body.cidade, referencia: req.body.referencia})
-      const response = await services.create({...req.body, endereco_id: responseAdress.id});
+    try { 
+      console.log(req.body);
+      const { rua, bairro, numero, cidade, referencia  } = req.body;
+      const responseAdress = await servicesEndereco.create(
+        {
+          rua: rua, 
+          bairro: bairro, 
+          numero: numero, 
+          cidade: cidade, 
+          referencia: referencia
+        }
+      )
+      console.log('aqui', responseAdress.id);
+      const { nome, sobrenome, email, senha, telefone, perfil  } = req.body;
+      const user =  {
+        nome: nome,
+        sobrenome: sobrenome,
+        email: email,
+        senha: senha,
+        telefone: telefone,
+        perfil: perfil,
+        endereco_id: responseAdress.id   }
+        console.log(user);
+       await services.create(user);
 
       return res.status(201).json({ res: "Usuario criado com sucesso" });
     } catch (error) {
@@ -44,9 +64,34 @@ class UsuarioController {
 
   async update(req, res, next) {
     try {
-      const idUsuario = req.params.id;
+      const id = req.params.id;
+      console.log('aaa', req.body)
+      const { nome, sobrenome, email, senha, telefone, perfil, endereco_id, ...attrs  } = req.body;
+      const { rua, bairro, numero, cidade, referencia  } = attrs;
+      const responseAdress = await servicesEndereco.update(endereco_id,
+        {
+          rua: rua, 
+          bairro: bairro, 
+          numero: numero, 
+          cidade: cidade, 
+          referencia: referencia
+        }
+      );
+      console.log(responseAdress);
+      const user =  {
+        nome: nome,
+        sobrenome: sobrenome,
+        email: email,
+        senha: senha,
+        telefone: telefone,
+        perfil: perfil,
+        endereco_id: endereco_id   }
+        console.log(user);
+       // await services.update(id,user);
 
-      const [updated] = await services.update(idUsuario, req.body);
+
+      const updated = await services.update(id, user);
+      console.log('aaaabbbb', updated);
       if (updated) {
         return res.status(200).json({ res: "Usuario atualizado com sucesso" });
       }
@@ -59,7 +104,7 @@ class UsuarioController {
     try {
       const idUsuario = req.params.id;
       const user = await services.findOne(idUsuario);
-      res.status(200).json({ res: user });
+      res.status(200).json(user);
     } catch (error) {
       responseError(res);
     }

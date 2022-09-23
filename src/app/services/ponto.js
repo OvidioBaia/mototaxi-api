@@ -14,19 +14,27 @@ module.exports = {
   },
 
   async findOne(id) {
-    const Ponto = await Ponto.findOne({
+    const ponto = await Ponto.findOne({
       where: { id: id },
     });
 
-    return Ponto;
+    return ponto;
   },
 
   async findOneByEmail(email) {
-    const Ponto = await Ponto.findOne({
+    const ponto = await Ponto.findOne({
       where: { email: email },
     });
 
-    return Ponto;
+    return ponto;
+  },
+
+  async findOneByName(nome) {
+    const ponto = await Ponto.findOne({
+      where: { nome: nome },
+    });
+
+    return ponto;
   },
 
   async update(id, data) {
@@ -37,9 +45,15 @@ module.exports = {
     return response;
   },
 
-  async list() {
-    const Pontos = await Ponto.findAll();
-
-    return Pontos;
+  async list(filtro) {
+    let pontos;
+    if (filtro) {
+      pontos = await Ponto.findAll({where: { endereco_id: filtro}});  
+    }
+    else {
+      pontos = await Ponto.findAll();
+    }
+    
+    return pontos;
   },
 };

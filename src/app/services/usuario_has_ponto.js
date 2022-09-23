@@ -1,12 +1,12 @@
-const Usuario_has_ponto = require("../models/Usuario_has_ponto");
+const Usuario_ponto = require("../models/Usuario_has_ponto");
 
 module.exports = {
   async create(data) {
-    Usuario_has_ponto.create(data);
+    Usuario_ponto.create(data);
   },
 
   async delete(id) {
-    const deleted = await Usuario_has_ponto.destroy({
+    const deleted = await Usuario_ponto.destroy({
       where: { id: id },
     });
 
@@ -14,23 +14,23 @@ module.exports = {
   },
 
   async findOne(id) {
-    const Usuario_has_ponto = await Usuario_has_ponto.findOne({
+    const usuario_ponto = await Usuario_ponto.findOne({
       where: { id: id },
     });
 
-    return Usuario_has_ponto;
+    return usuario_ponto;
   },
 
   async findOneByEmail(email) {
-    const Usuario_has_ponto = await Usuario_has_ponto.findOne({
+    const usuario_ponto = await Usuario_ponto.findOne({
       where: { email: email },
     });
 
-    return Usuario_has_ponto;
+    return usuario_ponto;
   },
 
   async update(id, data) {
-    const response = await Usuario_has_ponto.update(data, {
+    const response = await Usuario_ponto.update(data, {
       where: { id: id },
     });
 
@@ -38,8 +38,14 @@ module.exports = {
   },
 
   async list() {
-    const Usuario_has_pontos = await Usuario_has_ponto.findAll();
+    const usuario_pontos = await Usuario_ponto.findAll();
 
-    return Usuario_has_pontos;
+    return usuario_pontos;
+  },
+
+  async findByPontoId(pontoId) {
+    const usuario_pontos = await Usuario_ponto.findAll({where: { ponto_id: pontoId}});
+
+    return usuario_pontos;
   },
 };

@@ -10,8 +10,23 @@ function responseError(res) {
 class PontoController {
   async store(req, res, next) {
     try {
-      const responseAdress = await servicesEndereco.create({rua: req.body.rua, bairro: req.body.bairro, numero: req.body.numero, cidade: req.body.cidade, referencia: req.body.referencia})
-      const response = await services.create({...req.body, endereco_id: responseAdress.id});
+      const { rua,bairro,numero,cidade,referencia, ...attrs} = req.body
+      const {nome, latitude, longitude } = attrs
+      const endereco = {
+          rua: rua, 
+          bairro: bairro, 
+          numero: numero, 
+          cidade: cidade, 
+          referencia: referencia
+      }
+      const responseAdress = await servicesEndereco.create(endereco)
+      const ponto = {
+        nome:nome, 
+        latitude:latitude,
+        longitude:longitude,
+        endereco_id: responseAdress.id
+      }
+      const response = await services.create(ponto);
       return res.status(201).json({ res: "Ponto criado com sucesso" });
     } catch (error) {
       responseError(res);

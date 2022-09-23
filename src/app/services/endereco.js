@@ -2,7 +2,7 @@ const Endereco = require("../models/Endereco");
 
 module.exports = {
   async create(data) {
-    Endereco.create(data);
+   return Endereco.create(data);
   },
 
   async delete(id) {
@@ -14,12 +14,13 @@ module.exports = {
   },
 
   async findOne(id) {
-    const Endereco = await Endereco.findOne({
+    const endereco = await Endereco.findOne({
       where: { id: id },
     });
 
-    return Endereco;
+    return endereco;
   },
+  
 
   async findOneByEmail(email) {
     const Endereco = await Endereco.findOne({
@@ -30,6 +31,7 @@ module.exports = {
   },
 
   async update(id, data) {
+    console.log("aaquiiii", id);
     const response = await Endereco.update(data, {
       where: { id: id },
     });
